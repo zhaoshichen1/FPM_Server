@@ -11,8 +11,8 @@ public class Application extends Controller {
         return ok(index.render("Your new application is ready."));
     }
 
-    public static Result signup(){
-        return ok("Wow! Success!");
+    public Result signup(){
+        return null;
     }
 
 }
