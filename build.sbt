@@ -10,7 +10,6 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
-  javaEbean,
   "javax.ws.rs" % "jsr311-api" % "1.1.1" % "provided",
   "org.glassfish" % "javax.ejb" % "3.0.1" % "provided",
   "org.eclipse.persistence" % "javax.persistence" % "2.0.0" % "provided"
