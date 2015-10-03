@@ -36,10 +36,10 @@ public class User extends Model {
     @Column (length = 65, nullable = false)
     private byte[] shaPassword;
 
-    // the articles posted by this guy
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    public List<BlogPost> posts;
+//    // the articles posted by this guy
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    public List<BlogPost> posts;
 
     /* Variables - End */
 
@@ -47,6 +47,12 @@ public class User extends Model {
 
     public void setPassword(String password){
         this.shaPassword = getSha512(password);
+    }
+
+    public User(String c,String o,String p){
+        this.codename = c;
+        this.org = o;
+        setPassword(p);
     }
 
     // encryption of the password

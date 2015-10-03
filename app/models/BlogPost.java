@@ -57,10 +57,10 @@ public class BlogPost extends Model {
     // the number of comments
     public Long commentCount;
 
-    // the articles posted by this guy
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    public List<PostComment> comments;
+//    // the articles posted by this guy
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    public List<PostComment> comments;
 
     /* Variables - End */
 
