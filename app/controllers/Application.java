@@ -41,7 +41,7 @@ public class Application extends Controller {
         msg.put("message",message);
 
         ObjectNode wrapper = Json.newObject();
-        wrapper.put("type",msg);
+        wrapper.put(type,msg);
 
         return wrapper;
     }
