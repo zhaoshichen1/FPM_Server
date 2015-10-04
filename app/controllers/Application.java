@@ -154,6 +154,7 @@ public class Application extends Controller {
     public Result logout(){
 
         session().clear();
+        System.out.println("Logged out!");
         return ok(buildJsonResponse("success","Logged out successfully"));
 
     }
@@ -169,7 +170,12 @@ public class Application extends Controller {
         }
 
         else{
-            return ok(buildJsonForLoginAuthentification(User.findByCodename(session().get("username")), "User is logged in Already"));
+            ObjectNode wrapper = Json.newObject();
+            ObjectNode msg = Json.newObject();
+            msg.put("message", "User is logged in Already");
+            msg.put("user", session().get("username"));
+            wrapper.put("success",msg);
+            return ok(wrapper);
         }
     }
 
