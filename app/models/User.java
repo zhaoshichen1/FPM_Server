@@ -58,10 +58,6 @@ public class User extends Model {
         this.codename = c;
         this.org = o;
         setPassword(p);
-
-        System.out.println("** "+p);
-        System.out.println("** "+this.shaPassword.length);
-
     }
 
     public byte[] getPassword(){
@@ -105,7 +101,7 @@ public class User extends Model {
 
         // check password
         if(byteToString(user.getPassword()).equals(byteToString(getSha512(password)))){
-            System.out.println("corret!");
+            // System.out.println("corret!");
             return user;
         }
         else

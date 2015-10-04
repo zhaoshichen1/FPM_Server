@@ -154,7 +154,7 @@ public class Application extends Controller {
     public Result logout(){
 
         session().clear();
-        System.out.println("Logged out!");
+        // System.out.println("Logged out!");
         return ok(buildJsonResponse("success","Logged out successfully"));
 
     }
