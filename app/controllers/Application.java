@@ -19,6 +19,9 @@ public class Application extends Controller {
         return ok(index.render("Your new application is ready."));
     }
 
+    /* Internal Classes - Begin */
+
+    // the classes for User's model
     public static class UserForm {
         @Constraints.Required
         public String codename;
@@ -35,6 +38,22 @@ public class Application extends Controller {
         public String password;
     }
 
+    // the classes for Login's model
+    public static class Login extends UserForm {
+        @Constraints.Required
+        public String password;
+    }
+
+    /* Internal Classes - End */
+
+    /* Tool Methods - Begin */
+
+    /**
+     * To build a JSON response for AngularJS
+     * @param type success or failure
+     * @param message the message to show
+     * @return the JSON response
+     */
     private static ObjectNode buildJsonResponse(String type, String message){
 
         ObjectNode msg = Json.newObject();
@@ -46,6 +65,32 @@ public class Application extends Controller {
         return wrapper;
     }
 
+    /**
+     * Build a JSON node for login response
+     * @param user the user information for the login user
+     * @return the response in JSON
+     */
+    private static ObjectNode buildJsonForLoginAuthentification(User user,String t){
+
+        ObjectNode msg = Json.newObject();
+        msg.put("message",t);
+        msg.put("user",user.codename);
+
+        ObjectNode wrapper = Json.newObject();
+        wrapper.put("success",msg);
+
+        return wrapper;
+    }
+
+    /* Tool Methods - End */
+
+    /* Action Methods - Begin */
+
+    /**
+     * A real sign up action which checks whether the users exists or not by its codename
+     * And it could insert a new user's info into DB
+     * @return the response for the registration - Good for success, Bad request for failure which can be treated by AngularJS
+     */
     public Result signup(){
 
         Form<SignUp> signUpForm = Form.
@@ -74,4 +119,59 @@ public class Application extends Controller {
 
     }
 
+    /**
+     * the action for login ~~
+     * @return the response for the login, success or failure
+     */
+    public Result login(){
+
+        Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+
+        if(loginForm.hasErrors()){
+            return badRequest(loginForm.errorsAsJson());
+        }
+
+        Login loggingUser = loginForm.get();
+
+        // authentification
+        User user = User.findByCodenameAndPassword(loggingUser.codename,loggingUser.password);
+
+        if( user == null ){
+            return badRequest(buildJsonResponse("error","Incorrect email or password"));
+        }
+        else{
+            session().clear();
+            session("username",loggingUser.codename);
+
+            return ok(buildJsonForLoginAuthentification(user, "Logged in successfully"));
+        }
+    }
+
+    /**
+     * the action for logout
+     * @return the response in JSON of success
+     */
+    public Result logout(){
+
+        session().clear();
+        return ok(buildJsonResponse("success","Logged out successfully"));
+
+    }
+
+    /**
+     * the action to check whether there is already a user logged in
+     * @return
+     */
+    public Result isAuthenticated(){
+
+        if(session().get("username") == null ){
+            return unauthorized();
+        }
+
+        else{
+            return ok(buildJsonForLoginAuthentification(User.findByCodename(session().get("username")), "User is logged in Already"));
+        }
+    }
+
+    /* Action Methods - End */
 }
