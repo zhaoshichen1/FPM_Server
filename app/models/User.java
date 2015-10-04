@@ -36,10 +36,15 @@ public class User extends Model {
     @Column (length = 65, nullable = false)
     private byte[] shaPassword;
 
-//    // the articles posted by this guy
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    public List<BlogPost> posts;
+    // the articles posted by this guy
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+    @JsonIgnore
+    public List<BlogPost> posts;
+
+    // the articles posted by this guy
+    @OneToMany(mappedBy = "closer")
+    @JsonIgnore
+    public List<BlogPost> closedPosts;
 
     /* Variables - End */
 
@@ -83,6 +88,12 @@ public class User extends Model {
                 .where()
                 .eq("codename",codename.toLowerCase())
                 .findUnique();
+    }
+
+    public static List<User> findAllUsers(){
+        return find
+                .where()
+                .findList();
     }
 
     /* Methods - End */

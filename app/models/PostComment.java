@@ -19,14 +19,14 @@ public class PostComment extends Model {
     @Id
     public Long id;
 
-//    // the article to which the comment is linked
-//    @ManyToOne
-//    @JsonIgnore
-//    public BlogPost blogPost;
-//
-//    // the author of the post
-//    @ManyToOne
-//    public User author;
+    // the article to which the comment is linked
+    @ManyToOne
+    @JsonIgnore
+    public BlogPost blogPost;
+
+    // the author of the post
+    @ManyToOne
+    public User author;
 
     /* Variables - End */
 
