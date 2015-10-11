@@ -55,7 +55,7 @@ public class User extends Model {
     }
 
     public User(String c,String o,String p){
-        this.codename = c;
+        this.codename = c.toUpperCase();
         this.org = o;
         setPassword(p);
     }
@@ -93,25 +93,33 @@ public class User extends Model {
 
         User user = find
                 .where()
-                .eq("codename",codename.toLowerCase()).findUnique();
+                .eq("codename",codename.toUpperCase()).findUnique();
 
         if( user == null ){
+            System.out.println("Codename doesn't exist!");
+
+//            for(User u:User.findAllUsers()){
+//                System.out.println("Codename is "+u.codename);
+//            }
+
             return null;
         }
 
         // check password
         if(byteToString(user.getPassword()).equals(byteToString(getSha512(password)))){
-            // System.out.println("corret!");
+            System.out.println("Password corret!");
             return user;
         }
-        else
+        else {
+            System.out.println("Password Incorret!");
             return null;
+        }
     }
 
     public static User findByCodename(String codename){
         return find
                 .where()
-                .eq("codename",codename.toLowerCase())
+                .eq("codename",codename.toUpperCase())
                 .findUnique();
     }
 

@@ -13,6 +13,7 @@ import views.html.*;
 import models.BlogPost;
 import models.PostComment;
 import javax.jws.soap.SOAPBinding;
+import java.util.Date;
 
 public class Application extends Controller {
 
@@ -186,6 +187,45 @@ public class Application extends Controller {
      */
     public Result getPosts(){
         return(ok(Json.toJson(BlogPost.find.findList())));
+    }
+
+    /**
+     * get an indicated post with its id
+     * @param id
+     * @return the post
+     */
+    public Result getPost(Long id){
+        BlogPost blogPost = BlogPost.findBlogPostById(id);
+
+        System.out.println(blogPost.subject+" "+blogPost.id+" "+blogPost.is_active+" "+blogPost.closeTime);
+
+        if(blogPost == null)
+            return notFound(buildJsonResponse("error","Post not found"));
+
+        return ok(Json.toJson(blogPost));
+    }
+
+    /**
+     * close the current post
+     * @param id
+     * @return the post
+     */
+    public Result closePost(Long id){
+        BlogPost blogPost = BlogPost.findBlogPostById(id);
+        if(blogPost == null)
+            return notFound(buildJsonResponse("error","Post not found"));
+
+        blogPost.close_the_topic(Post.getCurrentLoggedInUser());
+        blogPost.save();
+
+        ObjectNode wrapper = Json.newObject();
+        ObjectNode msg = Json.newObject();
+        msg.put("message", "The post is closed!");
+        msg.put("user", session().get("username"));
+        msg.put("status - isActive",blogPost.is_active);
+        msg.put("closeTime",blogPost.closeTime);
+        wrapper.put("success",msg);
+        return ok(wrapper);
     }
 
     /* Action Methods - End */

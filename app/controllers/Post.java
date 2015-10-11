@@ -21,7 +21,11 @@ public class Post extends Controller {
      * get the current user who is logged in
      * @return the current user
      */
-    private static User getCurrentLoggedInUser(){
+    protected static User getCurrentLoggedInUser(){
+
+        System.out.println(session().get("username"));
+        System.out.println(User.findByCodename(session().get("username")).codename);
+
         return User.findByCodename(session().get("username"));
     }
 
@@ -56,6 +60,17 @@ public class Post extends Controller {
         }
 
         return ok(Application.buildJsonResponse("success", "Post added successfully!!"));
+    }
+
+    /**
+     * return all the posts written by the current user
+     * @return
+     */
+    public Result getUserPosts(){
+        User user = getCurrentLoggedInUser();
+        if( user == null )
+            return badRequest(Application.buildJsonResponse("error","No such user"));
+        return ok(Json.toJson(BlogPost.findBlogPostsByUser(user)));
     }
 
 }

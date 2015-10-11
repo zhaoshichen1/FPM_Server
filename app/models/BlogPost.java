@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.avaje.ebean.*;
 import play.data.format.Formats.*;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by zhaoshichen on 10/3/15.
@@ -46,11 +47,11 @@ public class BlogPost extends Model {
     @Column
     public User author;
 
-    @Column (columnDefinition = "DATE", nullable = false)
-    public Date createTime;
+    @Column (nullable = false)
+    public String createTime;
 
-    @Column (columnDefinition = "DATE")
-    public Date closeTime;
+    @Column
+    public String closeTime;
 
     // the guy who closes the topic
     @ManyToOne
@@ -69,6 +70,16 @@ public class BlogPost extends Model {
 
     /* Methods - Begin */
 
+    public static String DateToYYYYMMDD(Date date){
+
+        SimpleDateFormat sy1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateFormat=sy1.format(date);
+
+        System.out.println("Date is "+dateFormat);
+
+        return dateFormat;
+    }
+
     /**
      * the constructor of a blog
      * @param s the subject
@@ -80,8 +91,8 @@ public class BlogPost extends Model {
         this.subject = s;
         this.content = c;
         this.author = u;
-        this.createTime = new Date();
-        this.closeTime = new Date();
+        this.createTime = DateToYYYYMMDD(new Date());
+        this.closeTime = DateToYYYYMMDD(new Date());
         this.closer = u;
         this.commentCount = 0L;
         this.comments = new ArrayList<PostComment>();
@@ -89,16 +100,14 @@ public class BlogPost extends Model {
 
     }
 
-    // build the topic --> one author and the create time
-    public void build_the_topic(User user){
-        this.author = user;
-        this.createTime = new Date();
-    }
-
     // close the topic --> one closer and the close date
     public void close_the_topic(User user){
         this.closer = user;
-        this.closeTime = new Date();
+        this.closeTime = DateToYYYYMMDD(new Date());
+        this.is_active = false;
+
+        System.out.println("The post "+this.id+" "+this.subject+" is closed by "+user.codename+" at "+this.closeTime);
+        System.out.println("Is Active = "+this.is_active);
     }
 
     public static final Model.Finder<Long, BlogPost> find = new Model.Finder<Long, BlogPost>(Long.class,BlogPost.class);
