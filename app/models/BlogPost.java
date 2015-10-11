@@ -63,7 +63,6 @@ public class BlogPost extends Model {
 
     // the articles posted by this guy
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
     public List<PostComment> comments;
 
     /* Variables - End */

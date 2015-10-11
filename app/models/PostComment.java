@@ -28,9 +28,24 @@ public class PostComment extends Model {
     @ManyToOne
     public User author;
 
+    // the post time of the comment
+    @Column (nullable = false)
+    public String postTime;
+
+    @Column (nullable = false)
+    public String content;
+
     /* Variables - End */
 
     /* Methods - Begin */
+
+    public PostComment(BlogPost b, User u, String c){
+
+        this.blogPost = b;
+        this.author = u;
+        this.content = c;
+        this.postTime = BlogPost.DateToYYYYMMDD(new Date());
+    }
 
     public static final Model.Finder<Long, PostComment> find = new Model.Finder<Long, PostComment>(Long.class,PostComment.class);
 

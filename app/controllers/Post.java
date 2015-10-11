@@ -11,6 +11,7 @@ import play.data.validation.Constraints;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import views.html.*;
+import models.PostComment;
 
 /**
  * Created by zhaoshichen on 10/11/15.
@@ -73,4 +74,45 @@ public class Post extends Controller {
         return ok(Json.toJson(BlogPost.findBlogPostsByUser(user)));
     }
 
+    public static class CommentForm{
+
+        @Constraints.Required
+        public Long postId;
+
+        @Constraints.Required
+        public String comment;
+
+    }
+
+    /**
+     * Add a comment to an indicated Post
+     * @return
+     */
+    public Result addComment(){
+
+        System.out.println("In Add Comment!");
+
+        Form<CommentForm> commentForm = Form.form(CommentForm.class).bindFromRequest();
+
+        if (commentForm.hasErrors()){
+
+            System.out.println("Comment has error!");
+            return badRequest(commentForm.errorsAsJson());
+
+        } else {
+
+            System.out.println("Comment is going to be done");
+
+            Long postIID = commentForm.get().postId;
+            BlogPost blog = BlogPost.findBlogPostById(postIID);
+            PostComment newComment = new PostComment(blog,getCurrentLoggedInUser(),commentForm.get().comment);
+
+            blog.comments.add(newComment);
+            blog.commentCount = new Long(blog.comments.size());
+            blog.save();
+            newComment.save();
+
+            return ok(Application.buildJsonResponse("success","Comment added successfully"));
+        }
+    }
 }

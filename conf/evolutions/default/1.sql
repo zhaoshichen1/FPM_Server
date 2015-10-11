@@ -21,6 +21,8 @@ create table post_comment (
   id                        bigint not null,
   blog_post_id              bigint,
   author_id                 bigint,
+  post_time                 varchar(255) not null,
+  content                   varchar(255) not null,
   constraint pk_post_comment primary key (id))
 ;
 

@@ -11,9 +11,11 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # Home page
 POST        /app/signup                 controllers.Application.signup
 POST        /app/login                  controllers.Application.login
+POST        /app/post                   controllers.Post.addPost
+POST        /app/comment                controllers.Post.addComment
+
 GET         /app/logout                 controllers.Application.logout
 GET         /app/isauthenticated        controllers.Application.isAuthenticated
-POST        /app/post                   controllers.Post.addPost
 GET         /app/post/:id               controllers.Application.getPost(id:Long)
 GET         /app/close_post/:id         controllers.Application.closePost(id:Long)
 GET         /app/view_all_posts         controllers.Application.getPosts
