@@ -54,7 +54,7 @@ public class Application extends Controller {
      * @param message the message to show
      * @return the JSON response
      */
-    private static ObjectNode buildJsonResponse(String type, String message){
+    protected static ObjectNode buildJsonResponse(String type, String message){
 
         ObjectNode msg = Json.newObject();
         msg.put("message",message);

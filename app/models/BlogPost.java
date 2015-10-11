@@ -7,6 +7,7 @@ import play.data.validation.Constraints;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -67,6 +68,26 @@ public class BlogPost extends Model {
     /* Variables - End */
 
     /* Methods - Begin */
+
+    /**
+     * the constructor of a blog
+     * @param s the subject
+     * @param c the content
+     * @param u the author
+     */
+    public BlogPost(String s,String c,User u){
+
+        this.subject = s;
+        this.content = c;
+        this.author = u;
+        this.createTime = new Date();
+        this.closeTime = new Date();
+        this.closer = u;
+        this.commentCount = 0L;
+        this.comments = new ArrayList<PostComment>();
+        this.is_active = true;
+
+    }
 
     // build the topic --> one author and the create time
     public void build_the_topic(User user){

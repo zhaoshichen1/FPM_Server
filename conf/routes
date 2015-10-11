@@ -13,3 +13,6 @@ POST        /app/signup                 controllers.Application.signup
 POST        /app/login                  controllers.Application.login
 GET         /app/logout                 controllers.Application.logout
 GET         /app/isauthenticated        controllers.Application.isAuthenticated
+POST        /app/post                   controllers.Post.addPost
+
+
