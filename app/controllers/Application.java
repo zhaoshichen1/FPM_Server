@@ -10,7 +10,8 @@ import play.data.validation.Constraints;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import views.html.*;
-
+import models.BlogPost;
+import models.PostComment;
 import javax.jws.soap.SOAPBinding;
 
 public class Application extends Controller {
@@ -177,6 +178,14 @@ public class Application extends Controller {
             wrapper.put("success",msg);
             return ok(wrapper);
         }
+    }
+
+    /**
+     * get all the blogs to show before unlogged users
+     * @return the result of the posts
+     */
+    public Result getPosts(){
+        return(ok(Json.toJson(BlogPost.find.findList())));
     }
 
     /* Action Methods - End */
